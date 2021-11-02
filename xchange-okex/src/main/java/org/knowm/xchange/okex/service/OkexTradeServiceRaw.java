@@ -14,6 +14,7 @@ import org.knowm.xchange.okex.dto.trade.OkexCancelOrderRequest;
 import org.knowm.xchange.okex.dto.trade.OkexOrderDetails;
 import org.knowm.xchange.okex.dto.trade.OkexOrderRequest;
 import org.knowm.xchange.okex.dto.trade.OkexOrderResponse;
+import org.knowm.xchange.okex.dto.trade.OkexFillDetails;
 import org.knowm.xchange.utils.DateUtils;
 
 import static org.knowm.xchange.okex.OkexExchange.PARAM_PASSPHRASE;
@@ -306,6 +307,54 @@ public class OkexTradeServiceRaw extends OkexBaseService {
                       orders))
           .withRateLimiter(rateLimiter(OkexAuthenticated.amendBatchOrderPath))
           .call();
+    } catch (OkexException e) {
+      throw handleError(e);
+    }
+  }
+
+  /**
+   * https://www.okex.com/docs-v5/en/#rest-api-trade-get-transaction-details-last-3-days
+   */
+  public OkexResponse<List<OkexFillDetails>> getFills(String instrumentType, String underlying,
+      String instrumentId, String orderId, String afterId, String beforeId, String limit) throws IOException {
+    try {
+      return decorateApiCall(() -> okexAuthenticated.fills(
+          instrumentType, 
+          underlying, 
+          instrumentId, 
+          orderId,
+          afterId, 
+          beforeId, 
+          limit, 
+          exchange.getExchangeSpecification().getApiKey(), signatureCreator,
+          DateUtils.toUTCISODateString(new Date()),
+          (String) exchange.getExchangeSpecification().getExchangeSpecificParametersItem("passphrase"),
+          (String) exchange.getExchangeSpecification().getExchangeSpecificParametersItem("simulated"))
+      ).withRateLimiter(rateLimiter(fillsPath)).call();
+    } catch (OkexException e) {
+      throw handleError(e);
+    }
+  }
+
+  /**
+   * https://www.okex.com/docs-v5/en/#rest-api-trade-get-transaction-details-last-3-months
+   */
+  public OkexResponse<List<OkexFillDetails>> getFillsHistory(String instrumentType, String underlying, String instrumentId, String orderId, String afterId, String beforeId, String limit) throws IOException {
+    try {
+      return decorateApiCall(() -> okexAuthenticated.fillsHistory(
+          instrumentType,
+          underlying,
+          instrumentId,
+          orderId,
+          afterId,
+          beforeId,
+          limit,
+          exchange.getExchangeSpecification().getApiKey(),
+          signatureCreator, 
+          DateUtils.toUTCISODateString(new Date()),
+          (String) exchange.getExchangeSpecification().getExchangeSpecificParametersItem("passphrase"),
+          (String) exchange.getExchangeSpecification().getExchangeSpecificParametersItem("simulated")
+      )).withRateLimiter(rateLimiter(fillsHistoryPath)).call();
     } catch (OkexException e) {
       throw handleError(e);
     }

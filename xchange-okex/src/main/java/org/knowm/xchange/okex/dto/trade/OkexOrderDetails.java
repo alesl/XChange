@@ -14,6 +14,9 @@ public class OkexOrderDetails {
   @JsonProperty("instId")
   private String instrumentId;
 
+  @JsonProperty("tgtCcy")
+  private String quantityType;
+
   @JsonProperty("tdMode")
   private String tradeMode;
 
@@ -89,10 +92,10 @@ public class OkexOrderDetails {
   @JsonProperty("fee")
   private String fee;
 
-  @JsonProperty("rebaseCcy")
+  @JsonProperty("rebateCcy")
   private String rebateCcy;
 
-  @JsonProperty("rebase")
+  @JsonProperty("rebate")
   private String rebateAmount;
 
   @JsonProperty("category")

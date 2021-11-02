@@ -19,7 +19,7 @@ public class OkexDepositAddress {
   @JsonProperty("pmtId")
   String paymentId;
 
-  @JsonProperty("pmtId")
+  @JsonProperty("ccy")
   String currency;
 
   @JsonProperty("chain")
@@ -29,7 +29,7 @@ public class OkexDepositAddress {
   String to;
 
   @JsonProperty("selected")
-  String selected;
+  Boolean selected;
 
   @JsonProperty("ctAddr")
   String contactAddress;
