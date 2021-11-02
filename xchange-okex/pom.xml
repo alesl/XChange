@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>xchange-okex</artifactId>
+    <version>5.0.12-ICN-SNAPSHOT</version>
 
     <name>XChange Okex</name>
     <description>XChange implementation for Okex</description>
@@ -34,7 +35,7 @@
         <dependency>
             <groupId>org.knowm.xchange</groupId>
             <artifactId>xchange-core</artifactId>
-            <version>${project.version}</version>
+            <version>5.0.12-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
