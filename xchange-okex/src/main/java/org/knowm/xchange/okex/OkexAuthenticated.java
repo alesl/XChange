@@ -278,7 +278,7 @@ public interface OkexAuthenticated extends Okex {
       @HeaderParam("X-SIMULATED-TRADING") String simulatedTrading,
       @QueryParam("instId") String instrumentId,
       @QueryParam("ordId") String orderId,
-      @QueryParam("clOrderId") String clientOrderId)
+      @QueryParam("clOrdId") String clientOrderId)
       throws OkexException, IOException;
 
   @GET
