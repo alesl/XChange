@@ -94,6 +94,12 @@ public class OkexTradeServiceRaw extends OkexBaseService {
 
   public OkexResponse<List<OkexOrderDetails>> getOkexOrder(String instrumentId, String orderId)
       throws IOException {
+
+    return getOkexOrder(instrumentId, orderId, null);
+  }
+
+  public OkexResponse<List<OkexOrderDetails>> getOkexOrder(String instrumentId, String orderId, String clientOrderId)
+      throws IOException {
     try {
       return decorateApiCall(
               () ->
@@ -111,7 +117,7 @@ public class OkexTradeServiceRaw extends OkexBaseService {
                               .getExchangeSpecificParametersItem(PARAM_SIMULATED),
                       instrumentId,
                       orderId,
-                      null))
+                      clientOrderId))
           .withRateLimiter((rateLimiter(OkexAuthenticated.orderDetailsPath)))
           .call();
     } catch (OkexException e) {
