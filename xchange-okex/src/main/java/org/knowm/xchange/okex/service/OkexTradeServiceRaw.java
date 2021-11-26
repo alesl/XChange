@@ -94,7 +94,7 @@ public class OkexTradeServiceRaw extends OkexBaseService {
 
   public OkexResponse<List<OkexOrderDetails>> getOkexOrder(String instrumentId, String orderId)
       throws IOException {
-      return getOkexOrder(instrumentId, orderId);
+      return getOkexOrder(instrumentId, orderId, null);
   }
 
   public OkexResponse<List<OkexOrderDetails>> getOkexOrder(String instrumentId, String orderId, String clientOrderId)
