@@ -16,7 +16,7 @@ public class OkexOrderRequest {
   @JsonProperty("ccy")
   private String marginCurrency;
 
-  @JsonProperty("clOrdId")
+  @JsonProperty("clOrderId")
   private String clientOrderId;
 
   @JsonProperty("tag")
