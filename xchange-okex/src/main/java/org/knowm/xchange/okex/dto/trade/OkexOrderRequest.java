@@ -39,4 +39,8 @@ public class OkexOrderRequest {
 
   @JsonProperty("reduceOnly")
   private boolean reducePosition;
+
+  @JsonProperty("tgtCcy")
+  private String quantityType;
+
 }
