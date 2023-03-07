@@ -335,7 +335,7 @@ public class OkexTradeServiceRaw extends OkexBaseService {
           DateUtils.toUTCISODateString(new Date()),
           (String) exchange.getExchangeSpecification().getExchangeSpecificParametersItem("passphrase"),
           (String) exchange.getExchangeSpecification().getExchangeSpecificParametersItem("simulated"))
-      ).withRateLimiter(rateLimiter(fillsPath)).call();
+      ).withRateLimiter(rateLimiter(OkexAuthenticated.fillsPath)).call();
     } catch (OkexException e) {
       throw handleError(e);
     }
@@ -359,7 +359,7 @@ public class OkexTradeServiceRaw extends OkexBaseService {
           DateUtils.toUTCISODateString(new Date()),
           (String) exchange.getExchangeSpecification().getExchangeSpecificParametersItem("passphrase"),
           (String) exchange.getExchangeSpecification().getExchangeSpecificParametersItem("simulated")
-      )).withRateLimiter(rateLimiter(fillsHistoryPath)).call();
+      )).withRateLimiter(rateLimiter(OkexAuthenticated.fillsHistoryPath)).call();
     } catch (OkexException e) {
       throw handleError(e);
     }
