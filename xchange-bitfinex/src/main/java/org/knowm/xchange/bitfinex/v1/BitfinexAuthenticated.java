@@ -1,12 +1,5 @@
 package org.knowm.xchange.bitfinex.v1;
 
-import java.io.IOException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import org.knowm.xchange.bitfinex.v1.dto.BitfinexExceptionV1;
 import org.knowm.xchange.bitfinex.v1.dto.account.BitfinexAccountFeesResponse;
 import org.knowm.xchange.bitfinex.v1.dto.account.BitfinexBalanceHistoryRequest;
@@ -47,7 +40,16 @@ import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexPastFundingTradesRequest;
 import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexPastTradesRequest;
 import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexReplaceOrderRequest;
 import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexTradeResponse;
+import org.knowm.xchange.bitfinex.v2.dto.trade.HistoricalOrder;
 import si.mazi.rescu.ParamsDigest;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 
 @Path("v1")
 @Produces(MediaType.APPLICATION_JSON)
@@ -179,6 +181,15 @@ public interface BitfinexAuthenticated extends Bitfinex {
       @HeaderParam("X-BFX-SIGNATURE") ParamsDigest signature,
       BitfinexOrdersHistoryRequest ordersHistoryRequest)
       throws IOException, BitfinexExceptionV1;
+
+  @POST
+  @Path("orders/hist")
+  HistoricalOrder[] ordersHistV2(
+          @HeaderParam("X-BFX-APIKEY") String apiKey,
+          @HeaderParam("X-BFX-PAYLOAD") ParamsDigest payload,
+          @HeaderParam("X-BFX-SIGNATURE") ParamsDigest signature,
+          BitfinexOrdersHistoryRequest ordersHistoryRequest)
+          throws IOException, BitfinexExceptionV1;
 
   @POST
   @Path("offers")

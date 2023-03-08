@@ -1,11 +1,5 @@
 package org.knowm.xchange.bitfinex.service;
 
-import static org.knowm.xchange.bitfinex.BitfinexResilience.BITFINEX_RATE_LIMITER;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.knowm.xchange.bitfinex.BitfinexExchange;
 import org.knowm.xchange.bitfinex.dto.BitfinexException;
@@ -41,6 +35,7 @@ import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexReplaceOrderRequest;
 import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexTradeResponse;
 import org.knowm.xchange.bitfinex.v2.dto.EmptyRequest;
 import org.knowm.xchange.bitfinex.v2.dto.trade.ActiveOrder;
+import org.knowm.xchange.bitfinex.v2.dto.trade.HistoricalOrder;
 import org.knowm.xchange.bitfinex.v2.dto.trade.OrderTrade;
 import org.knowm.xchange.bitfinex.v2.dto.trade.Position;
 import org.knowm.xchange.bitfinex.v2.dto.trade.Trade;
@@ -52,6 +47,13 @@ import org.knowm.xchange.dto.trade.FloatingRateLoanOrder;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.exceptions.ExchangeException;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static org.knowm.xchange.bitfinex.BitfinexResilience.BITFINEX_RATE_LIMITER;
 
 public class BitfinexTradeServiceRaw extends BitfinexBaseService {
 
@@ -104,6 +106,19 @@ public class BitfinexTradeServiceRaw extends BitfinexBaseService {
                         String.valueOf(exchange.getNonceFactory().createValue()), limit)))
         .withRateLimiter(rateLimiter(BITFINEX_RATE_LIMITER))
         .call();
+  }
+
+  public HistoricalOrder[] getBitfinexOrdersHistoryAlt(long limit) throws IOException {
+    return decorateApiCall(
+            () ->
+                    bitfinex.ordersHistV2(
+                            apiKey,
+                            payloadCreator,
+                            signatureCreator,
+                            new BitfinexOrdersHistoryRequest(
+                                    String.valueOf(exchange.getNonceFactory().createValue()), limit)))
+            .withRateLimiter(rateLimiter(BITFINEX_RATE_LIMITER))
+            .call();
   }
 
   public BitfinexOfferStatusResponse[] getBitfinexOpenOffers() throws IOException {
@@ -599,6 +614,23 @@ public class BitfinexTradeServiceRaw extends BitfinexBaseService {
                     EmptyRequest.INSTANCE))
         .withRateLimiter(rateLimiter(BITFINEX_RATE_LIMITER))
         .call();
+  }
+
+  public List<HistoricalOrder> getBitfinexOrderHistoryV2(String symbol) throws IOException {
+    if (symbol == null) {
+      symbol = ""; // for empty symbol all active orders are returned
+    }
+    final String symbol2 = symbol;
+    return decorateApiCall(
+            () ->
+                    bitfinexV2.getOrderHistory(
+                            exchange.getNonceFactory(),
+                            apiKey,
+                            signatureV2,
+                            symbol2,
+                            EmptyRequest.INSTANCE))
+            .withRateLimiter(rateLimiter(BITFINEX_RATE_LIMITER))
+            .call();
   }
 
   public List<OrderTrade> getBitfinexOrderTradesV2(final String symbol, final Long orderId)
